@@ -41,7 +41,7 @@ public class JmxTest implements JmxTestMBean {
 
     @Override
     public void sayHello() {
-        LOGGER.debug("Entering sayHello()");
+        LOGGER.info("Entering sayHello()");
 
         conversations.getAndIncrement();
         LOGGER.warn(String.format(template, name, conversations.get()));
@@ -49,7 +49,7 @@ public class JmxTest implements JmxTestMBean {
 
     @Override
     public void addConversations(int newConversations) {
-        LOGGER.debug("Entering addConversation(): newConversations = {}", newConversations);
+        LOGGER.info("Entering addConversation(): newConversations = {}", newConversations);
 
         conversations.getAndAdd(newConversations);
     }
@@ -57,7 +57,7 @@ public class JmxTest implements JmxTestMBean {
     @Override
     public int getConversationCount()
     {
-        LOGGER.debug("Entering getConversationCount()");
+        LOGGER.info("Entering getConversationCount()");
 
         return conversations.get();
     }
@@ -65,7 +65,7 @@ public class JmxTest implements JmxTestMBean {
     @Override
     public void setConversationCount(int conversationsCount)
     {
-        LOGGER.debug("Entering setConversationCount(): conversationCount = {}", conversationsCount);
+        LOGGER.info("Entering setConversationCount(): conversationCount = {}", conversationsCount);
 
         conversations.set(conversationsCount);
     }

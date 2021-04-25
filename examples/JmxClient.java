@@ -27,8 +27,6 @@ public class JmxClient
 
         String hostAndPort = String.format("%s:%d", host, port);
         jmxServiceURL = new JMXServiceURL(String.format(JMX_RMI_FORMAT, hostAndPort, hostAndPort));
-
-        System.out.println("Created JMX Client: " + jmxServiceURL);
     }
 
     public static Object invokeMBean(String objectName,
@@ -82,7 +80,6 @@ public class JmxClient
 
     private JMXConnector beginJmxConnection()
     {
-        endJmxConnection();
         try
         {
             jmxConnector = getJmxConnector();

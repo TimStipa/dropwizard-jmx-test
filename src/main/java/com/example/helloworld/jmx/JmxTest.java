@@ -57,6 +57,8 @@ public class JmxTest implements JmxTestMBean
         LOGGER.debug("Entering addConversation(): newConversations = {}", newConversations);
 
         conversations.getAndAdd(newConversations);
+
+        LOGGER.warn("Adding new conversations: {}", newConversations);
     }
 
     @Override
@@ -73,5 +75,7 @@ public class JmxTest implements JmxTestMBean
         LOGGER.debug("Entering setConversationCount(): conversationCount = {}", conversationsCount);
 
         conversations.set(conversationsCount);
+
+        LOGGER.warn("Set conversations to: {}", conversationsCount);
     }
 }

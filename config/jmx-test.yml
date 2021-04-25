@@ -11,6 +11,6 @@ logging:
   loggers:
     com.example.helloworld.jmx: DEBUG
 
-template: "Hello, %s! This is conversation: %d"
+template: "Hello, %s! This is conversation #%d"
 defaultName: Stranger
 initialConversationCount: 0

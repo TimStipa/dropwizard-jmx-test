@@ -40,12 +40,15 @@ public class JmxTest implements JmxTestMBean
     }
 
     @Override
-    public void sayHello()
+    public String sayHello()
     {
         LOGGER.debug("Entering sayHello()");
 
         conversations.getAndIncrement();
-        LOGGER.warn(String.format(template, name, conversations.get()));
+        String message = String.format(template, name, conversations.get());
+
+        LOGGER.warn("Saying hello: " + message);
+        return message;
     }
 
     @Override

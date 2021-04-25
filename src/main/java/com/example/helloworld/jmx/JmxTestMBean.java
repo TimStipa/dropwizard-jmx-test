@@ -9,7 +9,7 @@ public interface JmxTestMBean
     /**
      * Initiates a conversation.
      */
-    public void sayHello();
+    public String sayHello();
 
     /**
      * Adds the provided number of conversations to the current statistics.

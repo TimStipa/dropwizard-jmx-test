@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dropwizard-jmx-test-deployment
+  labels:
+    app: dropwizard-jmx-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dropwizard-jmx-test
+  template:
+    metadata:
+      labels:
+        app: dropwizard-jmx-test
+    spec:
+      containers: 
+      - name: application
+        image: tstipa/dropwizard-jmx-test
+        command: ['java']
+        args: ["-Dcom.sun.management.jmxremote", "-Dcom.sun.management.jmxremote.port=1088", "-Dcom.sun.management.jmxremote.rmi.port=1088", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", "-Djava.rmi.server.hostname=127.0.0.1", "-jar", "dropwizard-example-mvn-1.0-SNAPSHOT.jar", "server", "jmx-test.yml"]
+        ports:
+          - containerPort: 1088
+          - containerPort: 8081  

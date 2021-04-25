@@ -1,3 +1,0 @@
-template: "Hello, %s! This is conversation: #%d"
-defaultName: Stranger
-initialConversationCount: 1

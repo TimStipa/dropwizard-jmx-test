@@ -1,17 +1,17 @@
 package com.example.helloworld.jmx;
 
-import com.example.helloworld.HelloWorldConfiguration;
+import com.example.helloworld.JmxTestConfiguration;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Test class to verify JMX MBean behavior in Dropwizard.
  */
-public class JmxTest implements JmxTestMBean {
-
+public class JmxTest implements JmxTestMBean
+{
     /** The logger. */
     private static final Logger LOGGER = LoggerFactory.getLogger(JmxTest.class);
 
@@ -27,7 +27,7 @@ public class JmxTest implements JmxTestMBean {
      *
      * @param configuration The configuration to use for initial setup details.
      */
-    public JmxTest(HelloWorldConfiguration configuration)
+    public JmxTest(JmxTestConfiguration configuration)
     {
         if (configuration == null)
         {
@@ -40,16 +40,18 @@ public class JmxTest implements JmxTestMBean {
     }
 
     @Override
-    public void sayHello() {
-        LOGGER.info("Entering sayHello()");
+    public void sayHello()
+    {
+        LOGGER.debug("Entering sayHello()");
 
         conversations.getAndIncrement();
         LOGGER.warn(String.format(template, name, conversations.get()));
     }
 
     @Override
-    public void addConversations(int newConversations) {
-        LOGGER.info("Entering addConversation(): newConversations = {}", newConversations);
+    public void addConversations(int newConversations)
+    {
+        LOGGER.debug("Entering addConversation(): newConversations = {}", newConversations);
 
         conversations.getAndAdd(newConversations);
     }
@@ -57,7 +59,7 @@ public class JmxTest implements JmxTestMBean {
     @Override
     public int getConversationCount()
     {
-        LOGGER.info("Entering getConversationCount()");
+        LOGGER.debug("Entering getConversationCount()");
 
         return conversations.get();
     }
@@ -65,7 +67,7 @@ public class JmxTest implements JmxTestMBean {
     @Override
     public void setConversationCount(int conversationsCount)
     {
-        LOGGER.info("Entering setConversationCount(): conversationCount = {}", conversationsCount);
+        LOGGER.debug("Entering setConversationCount(): conversationCount = {}", conversationsCount);
 
         conversations.set(conversationsCount);
     }

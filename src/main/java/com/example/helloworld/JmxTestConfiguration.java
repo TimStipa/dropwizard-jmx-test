@@ -7,7 +7,10 @@ import io.dropwizard.Configuration;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PositiveOrZero;
 
-public class HelloWorldConfiguration extends Configuration
+/**
+ * Configuration for JMX Test application.
+ */
+public class JmxTestConfiguration extends Configuration
 {
     @NotEmpty
     private String template;
@@ -24,22 +27,26 @@ public class HelloWorldConfiguration extends Configuration
     }
 
     @JsonProperty
-    public void setTemplate(String template) {
+    public void setTemplate(String template)
+    {
         this.template = template;
     }
 
     @JsonProperty
-    public String getDefaultName() {
+    public String getDefaultName()
+    {
         return defaultName;
     }
 
     @JsonProperty
-    public void setDefaultName(String name) {
+    public void setDefaultName(String name)
+    {
         this.defaultName = name;
     }
 
     @JsonProperty
-    public int getInitialConversationCount() {
+    public int getInitialConversationCount()
+    {
         return initialConversationCount;
     }
 

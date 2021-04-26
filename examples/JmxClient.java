@@ -6,6 +6,7 @@ import javax.management.remote.JMXServiceURL;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Optional;
 
 public class JmxClient
 {
@@ -15,7 +16,8 @@ public class JmxClient
 
     public JmxClient() throws MalformedURLException
     {
-        this("localhost", 1088);
+        this(System.getProperty("jmxclient.test.host","localhost"),
+                Integer.getInteger("jmxclient.test.port", 1088));
     }
 
     public JmxClient(String host, int port) throws MalformedURLException
@@ -27,6 +29,7 @@ public class JmxClient
 
         String hostAndPort = String.format("%s:%d", host, port);
         jmxServiceURL = new JMXServiceURL(String.format(JMX_RMI_FORMAT, hostAndPort, hostAndPort));
+        System.out.println("JMX Service URL is: " + jmxServiceURL);
     }
 
     public static Object invokeMBean(String objectName,
@@ -36,19 +39,19 @@ public class JmxClient
     {
         Object retVal = null;
         JmxClient client = new JmxClient();
-        try
+        Optional<JMXConnector> maybeConnector = client.getJmxConnector();
+
+        if (maybeConnector.isPresent())
         {
-            JMXConnector connector = client.beginJmxConnection();
-            MBeanServerConnection mbs = connector.getMBeanServerConnection();
-            retVal = mbs.invoke(new ObjectName(objectName), operationName, params, signature);
-        }
-        catch (Exception e)
-        {
-            System.out.println("Caught an exception invoking mBean: " + e);
-        }
-        finally
-        {
-            client.endJmxConnection();
+            try (JMXConnector connector = maybeConnector.get())
+            {
+                MBeanServerConnection mbs = connector.getMBeanServerConnection();
+                retVal = mbs.invoke(new ObjectName(objectName), operationName, params, signature);
+            }
+            catch (Exception e)
+            {
+                System.out.println("Caught an exception invoking mBean: " + e);
+            }
         }
 
         return retVal;
@@ -59,56 +62,36 @@ public class JmxClient
     {
         Object retVal = null;
         JmxClient client = new JmxClient();
-        try
+        Optional<JMXConnector> maybeConnector = client.getJmxConnector();
+
+        if (maybeConnector.isPresent())
         {
-            JMXConnector connector = client.beginJmxConnection();
-            MBeanServerConnection mbs = connector.getMBeanServerConnection();
-            retVal = mbs.getAttribute(new ObjectName(objectName), attributeName);
-        }
-        catch (Exception e)
-        {
-            System.out.println("Caught and exception getting attribute: " + e);
-        }
-        finally
-        {
-            client.endJmxConnection();
+            try (JMXConnector connector = maybeConnector.get())
+            {
+                MBeanServerConnection mbs = connector.getMBeanServerConnection();
+                retVal = mbs.getAttribute(new ObjectName(objectName), attributeName);
+            }
+            catch (Exception e)
+            {
+                System.out.println("Caught and exception getting attribute: " + e);
+            }
         }
 
         return retVal;
     }
 
-
-    private JMXConnector beginJmxConnection()
+    private Optional<JMXConnector> getJmxConnector()
     {
+        JMXConnector connector = null;
         try
         {
-            jmxConnector = getJmxConnector();
+            connector = JMXConnectorFactory.connect(jmxServiceURL);
         }
         catch (IOException ioe)
         {
-            endJmxConnection();
+            System.out.println("Encountered an IO Exception creating JMX Connector: " + ioe);
         }
 
-        return jmxConnector;
-    }
-
-    private void endJmxConnection()
-    {
-        try
-        {
-            if (jmxConnector != null)
-            {
-                jmxConnector.close();
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    private JMXConnector getJmxConnector() throws IOException
-    {
-        return JMXConnectorFactory.connect(jmxServiceURL);
+        return Optional.ofNullable(connector);
     }
 }

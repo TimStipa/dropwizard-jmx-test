@@ -17,8 +17,8 @@ spec:
       containers: 
       - name: application
         image: tstipa/dropwizard-jmx-test
-        command: ['java']
-        args: ["-Dcom.sun.management.jmxremote", "-Dcom.sun.management.jmxremote.port=1088", "-Dcom.sun.management.jmxremote.rmi.port=1088", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", "-Djava.rmi.server.hostname=127.0.0.1", "-jar", "dropwizard-example-mvn-1.0-SNAPSHOT.jar", "server", "jmx-test.yml"]
+        #command: ['java']
+        #args: ["-Dcom.sun.management.jmxremote", "-Dcom.sun.management.jmxremote.port=30007", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", "-Djava.rmi.server.hostname=172.0.101.59", "-jar", "dropwizard-example-mvn-1.0-SNAPSHOT.jar", "server", "jmx-test.yml"]
           #args: ["-Dcom.sun.management.jmxremote", "-Dcom.sun.management.jmxremote.port=1088", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", "-Djava.rmi.server.hostname=127.0.0.1", "-jar", "dropwizard-example-mvn-1.0-SNAPSHOT.jar", "server", "jmx-test.yml"]
         ports:
           - containerPort: 1088

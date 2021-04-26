@@ -1,5 +1,9 @@
 package com.example.helloworld;
 
+import com.codahale.metrics.Gauge;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.jmx.JmxReporter;
+import com.codahale.metrics.jvm.JmxAttributeGauge;
 import com.example.helloworld.jmx.JmxTest;
 
 import io.dropwizard.Application;
@@ -44,6 +48,15 @@ public class JmxTestApplication extends Application<JmxTestConfiguration>
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name = new ObjectName("test:type=Test");
         mbs.registerMBean(new JmxTest(configuration), name);
+
+        MetricRegistry registry = new MetricRegistry();
+        registry.register(MetricRegistry.name("test-name", "count"),
+                new JmxAttributeGauge(new ObjectName("test:type=Test"), "ConversationCount"));
+        registry.register(MetricRegistry.name("test-two", "hardCodedCount"),
+                (Gauge<Integer>) () -> 1);
+
+        JmxReporter reporter = JmxReporter.forRegistry(registry).build();
+        reporter.start();
 
         LOGGER.warn("Registered test bean!!");
     }

@@ -4,6 +4,7 @@ import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.jmx.JmxReporter;
 import com.codahale.metrics.jvm.JmxAttributeGauge;
+import com.codahale.metrics.servlets.MetricsServlet;
 import com.example.helloworld.jmx.JmxTest;
 
 import io.dropwizard.Application;
@@ -49,7 +50,7 @@ public class JmxTestApplication extends Application<JmxTestConfiguration>
         ObjectName name = new ObjectName("test:type=Test");
         mbs.registerMBean(new JmxTest(configuration), name);
 
-        MetricRegistry registry = new MetricRegistry();
+        MetricRegistry registry = environment.metrics();
         registry.register(MetricRegistry.name("test-name", "count"),
                 new JmxAttributeGauge(new ObjectName("test:type=Test"), "ConversationCount"));
         registry.register(MetricRegistry.name("test-two", "hardCodedCount"),

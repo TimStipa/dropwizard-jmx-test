@@ -9,7 +9,11 @@ spec:
   selector:
     app: dropwizard-jmx-test
   ports:
-    - port: 1088
+    - name: jmx-port
+      port: 1088
       targetPort: 1088
       nodePort: 30007  
-      
+    - name: admin-port
+      port: 8081
+      targetPort: 8081
+      nodePort: 30008
